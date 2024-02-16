@@ -1,0 +1,71 @@
+---
+import clerkNode from '@clerk/clerk-sdk-node';
+
+import Layout from '../layouts/Layout.astro';
+
+import Button from '../components/Button.astro';
+import Input from '../components/Input.astro';
+
+// redirect if not logged in
+const cookie = Astro.request.headers.get('__session');
+console.log({ cookie })
+if (!!cookie) {
+	const client = await clerkNode.clients.verifyClient(cookie);
+	const sessionId = client.lastActiveSessionId;
+
+	if (!!sessionId) {
+		const session = await clerkNode.sessions.verifySession(sessionId, cookie);
+		if (!session) {
+			return Astro.redirect('/login');
+		}
+	}
+}
+---
+
+<Layout title="Rate My Flat">
+	<main class="flex flex-col items-center justify-center h-full w-full">
+		<h1 class="mb-12 font-semibold text-4xl">rate my flat</h1>
+		<div class="mb-24 gap-2 flex flex-col items-center">
+			<Button id="sign-up">Sign up to rate your property</Button>
+			<p class="italic">or</p>
+			<Button id="sign-in">Log in</Button>
+		</div>
+		<p class="mb-2 text-lg">Search for a property:</p>
+		<Input class="max-w-lg" placeholder="Type an address..." />
+
+
+		<!-- <div class="flex flex-col items-center">
+			<div class="flex flex-col items-center">
+				<button>
+					<h4>Sign in with Google</h4>
+				</button>
+			</div>
+			<p>OR</p>
+			<div class="flex flex-col items-center">
+				<input placeholder="email" />
+				<button>submit</button>
+			</div>
+		</div> -->
+		<div id="sign-up" />
+	</main>
+</Layout>
+
+<script>
+	import Clerk from '@clerk/clerk-js'
+
+  const clerkPublishableKey = import.meta.env.PUBLIC_CLERK_PUBLISHABLE_KEY;
+	const clerk = new Clerk(clerkPublishableKey);
+	await clerk.load({
+		// Set load options here...
+	});
+
+	const signUpButton = document.querySelector<HTMLDivElement>('#sign-up')!;
+	signUpButton.addEventListener('click', () => {
+		clerk.openSignUp({});
+	});
+
+	const signInButton = document.querySelector<HTMLDivElement>('#sign-in')!;
+	signInButton.addEventListener('click', () => {
+		clerk.openSignIn({});
+	});
+</script>
