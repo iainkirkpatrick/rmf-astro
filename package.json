@@ -32,5 +32,6 @@
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
     "drizzle-kit": "^0.20.14"
-  }
+  },
+  "trustedDependencies": ["sharp"]
 }

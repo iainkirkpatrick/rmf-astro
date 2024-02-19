@@ -1,0 +1,18 @@
+---
+import { like } from "drizzle-orm";
+
+import PropertyListItem from "../../components/PropertyListItem.astro";
+
+import { db } from '../../../db'
+import { properties } from '../../../db/schema'
+
+export const partial = true;
+
+const formData = await Astro.request.formData()
+const address = formData.get('address')
+
+const fetchedProperties = await db.select().from(properties).where(like(properties.name, `%${address}%`)); 
+---
+<div class="my-12 flex flex-wrap w-full max-w-full h-full">
+  {fetchedProperties.map(p => <PropertyListItem name={p.name || undefined} />)}	
+</div>

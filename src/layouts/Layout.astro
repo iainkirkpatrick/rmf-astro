@@ -19,7 +19,7 @@ const { title } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body>
+	<body class="flex flex-col items-center w-full">
 		<slot />
 	</body>
 </html>
@@ -30,3 +30,10 @@ const { title } = Astro.props;
 		height: 100%;
 	}
 </style>
+
+<!-- add HTMX to all pages using main layout -->
+<script>
+	import htmx from 'htmx.org';
+	// @ts-ignore
+	window.htmx = htmx;
+</script>
