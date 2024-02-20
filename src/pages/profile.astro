@@ -3,9 +3,6 @@ import clerkNode from '@clerk/clerk-sdk-node';
 
 import Layout from '../layouts/Layout.astro';
 
-import Button from '../components/Button.astro';
-import Input from '../components/Input.astro';
-
 // protected page, redirect if not logged in
 const cookie = Astro.request.headers.get('__session');
 console.log({ cookie })

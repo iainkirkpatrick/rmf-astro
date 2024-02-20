@@ -12,5 +12,10 @@ export default defineConfig({
   adapter: vercel(),
   image: {
     domains: ["picsum.photos"],
+  },
+  vite: {
+    optimizeDeps: {
+      exclude: ['oslo']
+    }
   }
 });

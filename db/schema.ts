@@ -1,4 +1,26 @@
-import { int, mysqlEnum, mysqlTable, uniqueIndex, varchar, serial } from 'drizzle-orm/mysql-core';
+import { mysqlTable, uniqueIndex, varchar, serial, datetime } from 'drizzle-orm/mysql-core';
+
+// auth tables, from Lucia guide https://lucia-auth.com/database/drizzle
+export const userTable = mysqlTable("user", {
+	id: varchar("id", {
+		length: 255
+	}).primaryKey(),
+  username: varchar("username", { length: 255 }).unique(),
+  hashed_password: varchar("hashed_password", { length: 255 }),
+});
+
+export const sessionTable = mysqlTable("session", {
+	id: varchar("id", {
+		length: 255
+	}).primaryKey(),
+	userId: varchar("user_id", {
+		length: 255
+	})
+		.notNull()
+		.references(() => userTable.id),
+	expiresAt: datetime("expires_at").notNull()
+});
+
 
 export const properties = mysqlTable('properties', {
   id: serial("id").primaryKey(),
@@ -8,5 +30,3 @@ export const properties = mysqlTable('properties', {
 }));
 export type Property = typeof properties.$inferSelect;
 export type NewProperty = typeof properties.$inferInsert;
-
-// TODO: users table to mirror Clerk, most likely
