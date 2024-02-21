@@ -1,25 +1,54 @@
 ---
 import { db } from '../../db'
-import { properties } from '../../db/schema'
+import { propertiesTable } from '../../db/schema'
 
 import Layout from '../layouts/Layout.astro';
 
-import Button from '../components/Button.astro';
-import Input from '../components/Input.astro';
+import Button from '../components/ui/Button.astro';
+import Input from '../components/ui/Input.astro';
 import PropertyListItem from '../components/PropertyListItem.astro';
+import SignupDialog from '@/components/SignupDialog.tsx';
+import LoginDialog from '@/components/LoginDialog.tsx';
 
-const fetchedProperties = await db.select().from(properties);
+const user = Astro.locals.user;
 
+const fetchedProperties = await db.select().from(propertiesTable);
 ---
 
-<Layout title="Rate My Flat">
+<Layout title="Rate My Flat" user={user || undefined}>
 	<main class="my-24 flex flex-col items-center w-full max-w-6xl">
 		<h1 class="mb-12 font-semibold text-4xl">rate my flat</h1>
-		<div class="mb-24 gap-2 flex flex-col items-center">
-			<Button id="sign-up">Sign up to rate your property</Button>
-			<p class="italic">or</p>
-			<Button id="sign-in">Log in</Button>
-		</div>
+		{!user && (
+			<div class="mb-24 gap-2 flex flex-col items-center">
+				<SignupDialog client:idle>
+					<form class="flex flex-col gap-4" method="post" action="/api/sign-up">
+						<div>
+							<label for="email">Email</label>
+							<Input class="mt-1" id="email" name="email" />
+						</div>
+						<div>
+							<label for="password">Password</label>
+							<Input class="mt-1" id="password" name="password" type="password" />
+						</div>
+						<Button>Sign up</Button>
+					</form>
+				</SignupDialog>
+				<p class="italic">or</p>
+				<LoginDialog client:idle>
+					<form class="flex flex-col gap-4" method="post" action="/api/login">
+						<div>
+							<label for="email">Email</label>
+							<Input class="mt-1" id="email" name="email" />
+						</div>
+						<div>
+							<label for="password">Password</label>
+							<Input class="mt-1" id="password" name="password" type="password" />
+						</div>
+						<Button>Log in</Button>
+					</form>
+				</LoginDialog>
+			</div>
+		)}
 		<p class="mb-2 text-lg">Search for a property:</p>
 		<Input
 		  class="max-w-lg"
@@ -34,35 +63,6 @@ const fetchedProperties = await db.select().from(properties);
 		<div id="search-results" class="my-12 flex flex-wrap w-full max-w-full h-full">
 		  {fetchedProperties.map(p => <PropertyListItem name={p.name || undefined} />)}	
 		</div>
+
 	</main>
 </Layout>
-
-<script>
-	import Clerk from '@clerk/clerk-js'
-
-  const clerkPublishableKey = import.meta.env.PUBLIC_CLERK_PUBLISHABLE_KEY;
-	const clerk = new Clerk(clerkPublishableKey);
-	await clerk.load({
-		// Set load options here...
-	});
-
-	window.addEventListener('popstate', function(event) {
-    console.log('URL changed due to history navigation!');
-    // You can access the state object associated with the history entry
-    console.log(event.state);
-	});
-
-	const signUpButton = document.querySelector<HTMLDivElement>('#sign-up')!;
-	signUpButton.addEventListener('click', () => {
-		clerk.openSignUp({
-			afterSignUpUrl: '/?afterSignUp=true'
-		});
-	});
-
-	const signInButton = document.querySelector<HTMLDivElement>('#sign-in')!;
-	signInButton.addEventListener('click', () => {
-		clerk.openSignIn({
-			afterSignInUrl: '/?afterSignIn=true'
-		});
-	});
-</script>
