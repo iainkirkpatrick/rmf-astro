@@ -1,24 +1,5 @@
 ---
-import clerkNode from '@clerk/clerk-sdk-node';
-
 import Layout from '../layouts/Layout.astro';
-
-// protected page, redirect if not logged in
-const cookie = Astro.request.headers.get('__session');
-console.log({ cookie })
-if (!!cookie) {
-	const client = await clerkNode.clients.verifyClient(cookie);
-	const sessionId = client.lastActiveSessionId;
-
-	if (!!sessionId) {
-		const session = await clerkNode.sessions.verifySession(sessionId, cookie);
-		if (session.status !== 'active') {
-			return Astro.redirect('/');
-		}
-	}
-} else {
-	return Astro.redirect('/');
-}
 ---
 
 <Layout title="Profile">
