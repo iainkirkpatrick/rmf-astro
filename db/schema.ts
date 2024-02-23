@@ -10,7 +10,7 @@ export const usersTable = mysqlTable("user", {
   hashed_password: varchar("hashed_password", { length: 255 }),
 	google_id: varchar("google_id", { length: 255 }), 
 });
-export type User = Omit<typeof usersTable.$inferSelect, 'hashed_password'>;
+export type User = Omit<typeof usersTable.$inferSelect, 'hashed_password'|'google_id'>;
 
 export const sessionsTable = mysqlTable("session", {
 	id: varchar("id", {
