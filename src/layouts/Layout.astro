@@ -4,6 +4,8 @@ import '../styles/globals.css';
 
 import type { User } from 'db/schema';
 
+import NavUserButton from '@/components/NavUserButton.tsx';
+
 interface Props {
 	title: string;
 	user?: User
@@ -26,7 +28,7 @@ const { title, user } = Astro.props;
 		{!!user && (
 			<nav class="my-6 flex justify-between w-full max-w-6xl">
 				<div />
-				<button>{user.email}</button>
+				<NavUserButton client:idle user={user} />
 			</nav>
 		)}
 		<slot />
