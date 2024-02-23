@@ -21,31 +21,39 @@ const fetchedProperties = await db.select().from(propertiesTable);
 		{!user && (
 			<div class="mb-24 gap-2 flex flex-col items-center">
 				<SignupDialog client:idle>
-					<form class="flex flex-col gap-4" method="post" action="/api/sign-up">
-						<div>
-							<label for="email">Email</label>
-							<Input class="mt-1" id="email" name="email" />
-						</div>
-						<div>
-							<label for="password">Password</label>
-							<Input class="mt-1" id="password" name="password" type="password" />
-						</div>
-						<Button>Sign up</Button>
-					</form>
+					<div class="flex flex-col items-center w-full">
+						<a class="underline" href="/api/oauth/google">Sign up with Google</a>
+						<p class="my-4">or</p>
+						<form class="flex flex-col gap-4 w-full" method="post" action="/api/sign-up">
+							<div>
+								<label for="email">Email</label>
+								<Input class="mt-1" id="email" name="email" />
+							</div>
+							<div>
+								<label for="password">Password</label>
+								<Input class="mt-1" id="password" name="password" type="password" />
+							</div>
+							<Button>Sign up</Button>
+						</form>
+					</div>
 				</SignupDialog>
 				<p class="italic">or</p>
 				<LoginDialog client:idle>
-					<form class="flex flex-col gap-4" method="post" action="/api/login">
-						<div>
-							<label for="email">Email</label>
-							<Input class="mt-1" id="email" name="email" />
-						</div>
-						<div>
-							<label for="password">Password</label>
-							<Input class="mt-1" id="password" name="password" type="password" />
-						</div>
-						<Button>Log in</Button>
-					</form>
+					<div class="flex flex-col items-center w-full">
+						<a class="underline" href="/api/oauth/google">Sign in with Google</a>
+						<p class="my-4">or</p>
+						<form class="flex flex-col gap-4 w-full" method="post" action="/api/login">
+							<div>
+								<label for="email">Email</label>
+								<Input class="mt-1" id="email" name="email" />
+							</div>
+							<div>
+								<label for="password">Password</label>
+								<Input class="mt-1" id="password" name="password" type="password" />
+							</div>
+							<Button>Log in</Button>
+						</form>
+					</div>
 				</LoginDialog>
 			</div>
 		)}

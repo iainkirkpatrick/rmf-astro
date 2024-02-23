@@ -6,7 +6,9 @@ export const usersTable = mysqlTable("user", {
 		length: 255
 	}).primaryKey(),
   email: varchar("email", { length: 255 }).unique(),
+	// username: varchar("username", { length: 255 }),
   hashed_password: varchar("hashed_password", { length: 255 }),
+	google_id: varchar("google_id", { length: 255 }), 
 });
 export type User = Omit<typeof usersTable.$inferSelect, 'hashed_password'>;
 

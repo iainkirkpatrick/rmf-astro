@@ -2,6 +2,7 @@
 
 import { Lucia } from "lucia";
 import { DrizzleMySQLAdapter } from "@lucia-auth/adapter-drizzle";
+import { generateState, Google } from "arctic";
 
 import { db } from "../db";
 import { sessionsTable, usersTable } from "../db/schema";
@@ -18,7 +19,8 @@ export const lucia = new Lucia(adapter, {
 	getUserAttributes: (attributes) => {
 		return {
 			// attributes has the type of DatabaseUserAttributes
-			email: attributes.email
+			email: attributes.email,
+			username: attributes.username
 		};
 	}
 
@@ -29,6 +31,13 @@ declare module "lucia" {
 		Lucia: typeof lucia;
 		DatabaseUserAttributes: {
 			email: string;
+			username: string;
 		};
 	}
 }
+
+export const google = new Google(
+	import.meta.env.GOOGLE_CLIENT_ID,
+	import.meta.env.GOOGLE_CLIENT_SECRET,
+	import.meta.env.GOOGLE_OAUTH_REDIRECT_URI,
+);
