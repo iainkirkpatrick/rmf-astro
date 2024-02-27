@@ -14,5 +14,5 @@ const address = formData.get('address')
 const fetchedProperties = await db.select().from(propertiesTable).where(like(propertiesTable.name, `%${address}%`)); 
 ---
 <div class="my-12 flex flex-wrap w-full max-w-full h-full">
-  {fetchedProperties.map(p => <PropertyListItem name={p.name || undefined} />)}	
+  {fetchedProperties.map(p => <PropertyListItem id={p.id} name={p.name || undefined} />)}	
 </div>

@@ -69,7 +69,7 @@ const fetchedProperties = await db.select().from(propertiesTable);
 		/>
 
 		<div id="search-results" class="my-12 flex flex-wrap w-full max-w-full h-full">
-		  {fetchedProperties.map(p => <PropertyListItem name={p.name || undefined} />)}	
+		  {fetchedProperties.map(p => <PropertyListItem id={p.id} name={p.name || undefined} />)}	
 		</div>
 
 	</main>

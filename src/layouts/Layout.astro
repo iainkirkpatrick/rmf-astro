@@ -26,8 +26,10 @@ const { title, user } = Astro.props;
 	</head>
 	<body class="flex flex-col items-center w-full">
 		{!!user && (
-			<nav class="my-6 flex justify-between w-full max-w-6xl">
-				<div />
+			<nav class="my-6 flex justify-between items-center w-full max-w-6xl">
+				<div>
+					<h4 class="font-semibold text-xl">rate my flat</h4>
+				</div>
 				<NavUserButton client:idle user={user} />
 			</nav>
 		)}

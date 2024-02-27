@@ -1,0 +1,29 @@
+---
+import { Image, Picture } from 'astro:assets';
+import { eq } from "drizzle-orm";
+import { db } from '../../../db'
+import { propertiesTable } from '../../../db/schema'
+
+import Layout from '@/layouts/Layout.astro';
+
+const user = Astro.locals.user;
+const { id } = Astro.params;
+
+const matchingProperties = await db.select().from(propertiesTable).where(eq(propertiesTable.id, parseInt(id)));
+const matchingProperty = matchingProperties[0];
+---
+<Layout title=`${matchingProperty.name}` user={user || undefined}>
+	<main class="flex flex-col items-center w-full max-w-6xl">
+		<Image
+			src="https://picsum.photos/1152/384"
+			alt="Random image for a property."
+			width="1152"
+			height="192"
+			class="object-cover w-full max-h-[384px]"
+		/>
+		<div class="mt-8 flex flex-col w-full">
+			<h1 class="font-semibold text-2xl">{matchingProperty.name}</h1>
+			<p>(other details)</p>
+		</div>
+	</main>
+</Layout>
