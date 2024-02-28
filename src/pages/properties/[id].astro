@@ -9,7 +9,11 @@ import Layout from '@/layouts/Layout.astro';
 const user = Astro.locals.user;
 const { id } = Astro.params;
 
-const matchingProperties = await db.select().from(propertiesTable).where(eq(propertiesTable.id, parseInt(id)));
+if (!id) {
+	Astro.redirect('/properties');
+}
+
+const matchingProperties = await db.select().from(propertiesTable).where(eq(propertiesTable.id, parseInt(id!)));
 const matchingProperty = matchingProperties[0];
 ---
 <Layout title=`${matchingProperty.name}` user={user || undefined}>
